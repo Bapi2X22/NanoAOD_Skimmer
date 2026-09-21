@@ -83,14 +83,25 @@ do
     # --------------------------------------------------------
     echo "Running nano_reduce.py..."
 
+    if [ "$IS_DATA" = "1" ]; then
+        CONFIG="core/config_data.py"
+    else
+        CONFIG="core/config.py"
+    fi
+
     SKIMMER_ARGS=(
         --input "$INPUT"
         --output "$OUTPUT_LOCAL"
+        --config "$CONFIG"
         --apply_pixelSeed
         --apply_bJet_tagger
+        --apply-jet-selection
+        --apply-electron-selection
+        --apply-muon-selection
+        --apply-photon-selection
+        --apply-event-selection
     )
 
-    # Additional options for DATA
     if [ "$IS_DATA" = "1" ]; then
         SKIMMER_ARGS+=(
             --apply_trigger

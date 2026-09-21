@@ -11,8 +11,6 @@ from core.reducer import NanoReducer
 from core.writer import NanoWriter
 import importlib.util
 
-# parser = argparse.ArgumentParser()
-
 parser = argparse.ArgumentParser(
     description="Run NanoReducer on a NanoAOD ROOT file.",
     formatter_class=argparse.ArgumentDefaultsHelpFormatter,

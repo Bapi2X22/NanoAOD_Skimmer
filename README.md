@@ -108,7 +108,7 @@ Make sure the required Python packages are available in the environment.
 From inside the `NanoSkimmer` directory:
 
 ```bash
-python3 nano_reduce.py --input input.root --output skim.root
+python3 nano_reduce.py --input input.root --output skim.root --config core/config.py
 ```
 
 By default this uses the MC configuration.
@@ -116,13 +116,13 @@ By default this uses the MC configuration.
 ### Process Data
 
 ```bash
-python3 nano_reduce.py --input input.root --output skim.root --data
+python3 nano_reduce.py --input input.root --output skim.root --data --config core/config_data.py
 ```
 
 ### Apply the Data Trigger Selection
 
 ```bash
-python3 nano_reduce.py --input input.root --output skim.root --data --apply_trigger
+python3 nano_reduce.py --input input.root --output skim.root --data --apply_trigger --config core/config.py
 ```
 
 ### Optional Selections
@@ -130,43 +130,43 @@ python3 nano_reduce.py --input input.root --output skim.root --data --apply_trig
 Apply the photon pixel-seed selection:
 
 ```bash
-python3 nano_reduce.py --input input.root --output skim.root --apply_pixelSeed
+python3 nano_reduce.py --input input.root --output skim.root --apply_pixelSeed --config core/config.py
 ```
 
 Apply the b-jet tagger selection:
 
 ```bash
-python3 nano_reduce.py --input input.root --output skim.root --apply_bJet_tagger
+python3 nano_reduce.py --input input.root --output skim.root --apply_bJet_tagger --config core/config.py
 ```
 
 Apply jet kinematic cuts:
 
 ```bash
-python3 nano_reduce.py --input input.root --output skim.root --apply_kinematic_cuts_jet
+python3 nano_reduce.py --input input.root --output skim.root --apply_kinematic_cuts_jet --config core/config.py
 ```
 
 Multiple options can be combined:
 
 ```bash
-python3 nano_reduce.py --input input.root --output skim.root --apply_pixelSeed --apply_bJet_tagger
+python3 nano_reduce.py --input input.root --output skim.root --apply_pixelSeed --apply_bJet_tagger --config core/config.py
 ```
 
-### Disable Selections
+### Apply object selections
 
-Individual selection stages can be disabled:
+Individual selection stages can be enabled:
 
 ```bash
-python3 nano_reduce.py --input input.root --output skim.root --no-jet-selection
+python3 nano_reduce.py --input input.root --output skim.root --apply-jet-selection --config core/config.py
 ```
 
 Available options:
 
 ```text
---no-jet-selection
---no-electron-selection
---no-muon-selection
---no-photon-selection
---no-event-selection
+--apply-jet-selection
+--apply-electron-selection
+--apply-muon-selection
+--apply-photon-selection
+--apply-event-selection
 ```
 
 ## Output ROOT File
