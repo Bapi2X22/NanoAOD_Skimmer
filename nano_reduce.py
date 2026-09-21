@@ -9,40 +9,58 @@ import argparse
 
 from core.reducer import NanoReducer
 from core.writer import NanoWriter
+import importlib.util
 
-parser = argparse.ArgumentParser()
+# parser = argparse.ArgumentParser()
+
+parser = argparse.ArgumentParser(
+    description="Run NanoReducer on a NanoAOD ROOT file.",
+    formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+    epilog="""
+Examples:
+  python run.py --input input.root --output skim.root --config core/config.py
+
+  python run.py --input input.root --config core/config_data.py --data
+"""
+)
 
 parser.add_argument("--input", required=True)
 parser.add_argument("--output", default="skim.root")
 
 parser.add_argument(
-    "--no-jet-selection",
-    action="store_true",
-    help="Disable jet selection.",
+    "--config",
+    required=True,
+    help="Path to the Python config file.",
 )
 
 parser.add_argument(
-    "--no-electron-selection",
+    "--apply-jet-selection",
     action="store_true",
-    help="Disable electron selection.",
+    help="Apply jet selection.",
 )
 
 parser.add_argument(
-    "--no-muon-selection",
+    "--apply-electron-selection",
     action="store_true",
-    help="Disable muon selection.",
+    help="Apply electron selection.",
 )
 
 parser.add_argument(
-    "--no-photon-selection",
+    "--apply-muon-selection",
     action="store_true",
-    help="Disable photon selection.",
+    help="Apply muon selection.",
 )
 
 parser.add_argument(
-    "--no-event-selection",
+    "--apply-photon-selection",
     action="store_true",
-    help="Disable event selection.",
+    help="Apply photon selection.",
+)
+
+parser.add_argument(
+    "--apply-event-selection",
+    action="store_true",
+    help="Apply event selection.",
 )
 
 parser.add_argument(
@@ -77,21 +95,28 @@ parser.add_argument(
 
 args = parser.parse_args()
 
-if args.data:
-    from core import config_data as config
-    data_kind = "data"
-else:
-    from core import config as config
-    data_kind = "mc"
+def load_config(config_path):
+    spec = importlib.util.spec_from_file_location("user_config", config_path)
+
+    if spec is None or spec.loader is None:
+        raise ImportError(f"Could not load config: {config_path}")
+
+    config = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(config)
+
+    return config
+
+config = load_config(args.config)
+data_kind = "data" if args.data else "mc"
 
 store = NanoReducer(
     args.input,
     config=config,
-    jet_selection=not args.no_jet_selection,
-    electron_selection=not args.no_electron_selection,
-    muon_selection=not args.no_muon_selection,
-    photon_selection=not args.no_photon_selection,
-    event_selection=not args.no_event_selection,
+    jet_selection=args.apply_jet_selection,
+    electron_selection=args.apply_electron_selection,
+    muon_selection=args.apply_muon_selection,
+    photon_selection=args.apply_photon_selection,
+    event_selection=args.apply_event_selection,
     apply_trigger=args.apply_trigger, 
     apply_pixelSeed=args.apply_pixelSeed,
     apply_bJet_tagger=args.apply_bJet_tagger,
