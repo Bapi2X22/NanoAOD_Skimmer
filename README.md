@@ -1,4 +1,4 @@
-This skimmer processes input files and retains only the subset of NanoAOD branches specified in [`core/config.py`](https://github.com/Archana-naik0019/Skimmer_HtoAAto4gamma/blob/main/core/config.py). All skimmed output files will contain exclusively these configured branches.
+This skimmer processes input files and retains only the subset of NanoAOD branches (required for the H to AA to 4 photons analysis) specified in [`core/config.py`](https://github.com/Archana-naik0019/Skimmer_HtoAAto4gamma/blob/main/core/config.py). All skimmed output files will contain exclusively these configured branches.
 Additionally, a second tier of skimming is performed via [`core/reduced.py`](https://github.com/Archana-naik0019/Skimmer_HtoAAto4gamma/blob/main/core/reducer.py) by applying:
 - Lumi-based filtering
 - High-Level Trigger (HLT) filtering
